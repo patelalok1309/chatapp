@@ -1,0 +1,136 @@
+.user-image {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.chat-item {
+    cursor: pointer !important;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.msg-input {
+    background: linear-gradient(to bottom, #14385c, #0e2843);
+    border: 1px solid #6d6aa8;
+    color: white;
+}
+
+.chat-section {
+    display: none;
+    position: relative;
+}
+
+.chat-form-inputs{
+    position: absolute;
+    width: 100%;
+    top: 100%;
+}
+
+ul.chat-list-ul {
+    height: 80vh;
+    overflow-y: auto;
+}
+
+ul.chat-list-ul,
+ul.chat-list-ul li {
+    background-color: rgb(246, 246, 246);
+}
+
+#chat-container {
+    padding-top: 1rem;
+    width: 100%;
+    height: 70vh;
+    background: linear-gradient(to bottom, #14385c, #111827);
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.start-head {
+    color: #0e4c89;
+    font-weight: bolder;
+    font-size: 1.5rem;
+}
+
+.offline-status {
+    color: red;
+}
+
+.online-status {
+    color: rgb(4, 104, 4);
+}
+
+.current-user-chat {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: 1.8rem;
+}
+
+.current-user-chat-wrapper {
+    padding: 3px 8px;
+    border-radius: 1rem;
+    background-color: #3f75ac;
+    color: rgb(244, 244, 252);
+    margin-right: 0.2rem;
+}
+
+.distance-user-chat {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 1.8rem;
+}
+
+.distance-user-chat-wrapper {
+    padding: 3px 8px;
+    border-radius: 1rem;
+    background-color: #09218f;
+    color: rgb(244, 244, 252);
+    margin-left: 0.2rem;
+}
+
+.btn-secondary{
+    background-color: rgb(83, 68, 68);
+}
+
+.btn-danger{
+    background-color: rgb(237, 1, 1);
+}
+.fa-trash{
+    color: rgb(163, 0, 0);
+}
+
+@media screen and (min-width: 480px) {
+    .chat-user-info {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .chat-username {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #1c022e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #232068;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
