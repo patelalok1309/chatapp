@@ -20,6 +20,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [UserController::class , 'loadDashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/groups', [UserController::class , 'loadGroups'])->middleware(['auth', 'verified'])->name('groups');
+Route::post('/create-group', [UserController::class , 'createGroup'])->middleware(['auth', 'verified'])->name('createGroup');
 
 Route::get('/chat', function(){
     return view('chat');
@@ -37,4 +39,5 @@ Route::post('/save-chat' , [UserController::class , 'saveChat']);
 Route::post('/load-chats' , [UserController::class , 'loadChats']);
 Route::get('/get-user', [UserController::class , 'getUser']);
 Route::post('/delete-chat' , [UserController::class , 'deleteChat']);
+Route::put('/update-chat' , [UserController::class , 'updateChat']);
 

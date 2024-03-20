@@ -32,7 +32,7 @@ jQuery(document).ready(function () {
     });
 
 
-    // save new message 
+    // save/send new message 
     $('#chat-form').submit(function (e) {
         e.preventDefault();
         var message = $('#message').val();
@@ -49,9 +49,14 @@ jQuery(document).ready(function () {
                     let chat = res.data.message;
                     let html = `<div class="current-user-chat mb-1" id="${res.data.id}-chat">
                                 <span class="current-user-chat-wrapper">${chat}</span>
+                                <div class="d-flex gap-1">
                                 <i class="fa fa-trash fa-xs" aria-hidden="true" data-bs-toggle="modal" 
                                 data-id="${res.data.id}"
-                                data-bs-target="#deleteChatModal"></i>
+                                data-bs-target="#updateChatModal"></i>
+                                <i class="fa fa-edit fa-xs" aria-hidden="true" data-bs-toggle="modal" 
+                                data-id="${res.data.id}"
+                                data-message = "${chat}"
+                                data-bs-target="#updateChatModal"></i><div>
                                 </div>`;
 
                     $('#chat-container').append(html);
@@ -94,11 +99,18 @@ jQuery(document).ready(function () {
                         let html = `<div class="${addContainerClass}" id="` + chat_id + `">`
                         html += `<span class="${addWrapperClass}">`;
                         html += `${chats[i].message}</span>`;
+                        html += '<div class="d-flex gap-1">';
                         html += chats[i].sender_id === sender_id ?
                             `<i class="fa fa-trash fa-xs" 
                                 data-bs-toggle="modal" 
                                 data-id="${chats[i].id}"
-                                data-bs-target="#deleteChatModal"></i></div>` : `</div>`;
+                                data-bs-target="#deleteChatModal"></i>` : ``;
+                        html += chats[i].sender_id === sender_id ?
+                            `<i class="fa fa-edit fa-xs" 
+                                data-bs-toggle="modal" 
+                                data-id="${chats[i].id}"
+                                data-message="${chats[i].message}"
+                                data-bs-target="#updateChatModal"></i></div></div>` : `</div></div>`;
 
                         $('#chat-container').append(html);
                         scrollChat();
@@ -111,19 +123,28 @@ jQuery(document).ready(function () {
     }// load old chats ends 
 
 
+    // Delete Chat
     $(document).on('click', '.fa-trash', function () {
         var id = $(this).attr('data-id');
         let message = $(this).parent().prev().text();
         $('#delete-chat-id').val(id);
         $('#delete-message').text(message);
-    })
+    });
+
+    // Update Chat 
+    $(document).on('click', '.fa-edit', function () {
+        var id = $(this).attr('data-id');
+        $('#update-chat-id').val(id);
+        var message = $(this).parent().prev().text();
+        $('#message-input-box').attr('value', message);
+        $('#message-input-box').text( message);
+    });
 
 
+    // Handle delete form submission 
     $('#delete-chat-form').submit((e) => {
         e.preventDefault();
-
         var id = $('#delete-chat-id').val();
-        console.log(id);
 
         $.ajax({
             url: "/delete-chat",
@@ -137,7 +158,23 @@ jQuery(document).ready(function () {
                 }
             }
         })
+    })// delete modal form ends
 
+    $('#udpate-chat-form').submit((e) => {
+        e.preventDefault();
+        var id = $('#update-chat-id').val();
+        var message = $('#message-input-box').val();
+        $.ajax({
+            url: '/update-chat',
+            type: "PUT",
+            data: { id: id, message: message },
+            success: function (res) {
+                if (res.success) {
+                    $(`#${id}-chat`).children('span').text(message);
+                    $('#deleteChatModal').modal('hide');
+                }
+            }
+        })
     })
 
 })// document ready ends 
@@ -173,7 +210,6 @@ Echo.join('status-update')
         $('#' + user.id + '-status').text('offline');
     })
     .listen('UserStatusEvent', (e) => {
-        console.log('asdf' + e);
     })
 
 
@@ -181,7 +217,6 @@ Echo.join('status-update')
 Echo.private('broadcast-message')
     .listen('.getChatMessage', (data) => {
         if (sender_id == data.chat.receiver_id && receiver_id == data.chat.sender_id) {
-            console.log(data);
             let html = `<div class="distance-user-chat mb-1 " id="${data.chat.id}-chat">`
             html += `<span class="distance-user-chat-wrapper">`
             html += `${data.chat.message}</span></div>`;
@@ -192,10 +227,55 @@ Echo.private('broadcast-message')
     });
 
 
-// Listen Delete Message Event
+// Listen DELETE Message Event
 Echo.private('message-deleted')
     .listen('MessageDeleteEvent', (data) => {
-        console.log(data);
         $(`#${data.id}-chat`).remove();
         $('#deleteChatModal').modal('hide');
     });
+
+
+// Listen UPDATE Message Event
+Echo.private('message-updated')
+    .listen('MessageUpdateEvent', (data) => {
+        $(`#${data.id}-chat`).children('span').text(data.message);
+        $('#message-input-box').val('');
+        $('#updateChatModal').modal('hide');
+    });
+
+// ----------------Group Chats Scripts 
+
+$(document).ready(function(){
+    $('#createGroupForm').submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url : '/create-group',
+            type : 'POST',
+            data : new FormData(this),
+            contentType : false,
+            caches : false,
+            processData : false,
+            success: function(res){
+                if(res.success){
+                    alert(res.msg);
+                }
+            }    
+        })
+    })
+})
+//document ready ends
+
+
+// ----------------Group Members scripts
+
+$('.allMember').click(function(){
+    
+    var id = $(this).attr('data-id');
+    var limit = $(this).attr('data-limit');
+
+    $('#add-group-id').val(id);
+    $('#add-limit').val(limit);
+
+    
+})

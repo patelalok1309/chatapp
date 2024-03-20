@@ -11,6 +11,7 @@
 <body class="antialiased">
 
     <a class="mx-auto text-center " href="{{ route('register')}}">Register</a>
+    <a class="mx-auto text-center " href="{{ route('login')}}">Login</a>
 
     <script src="{{ asset('build/assets/app-CTaZfV6j.js') }}"></script>
     <script>

@@ -67,8 +67,7 @@
         </div>
     </div>
 
-    <!-- Button trigger modal -->
-    <!-- Modal -->
+    <!-- Delete Chat Modal -->
     <div class="modal fade" id="deleteChatModal" tabindex="-1" aria-labelledby="deleteChatModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -92,4 +91,26 @@
         </div>
     </div>
 
+    <!-- Update Chat Modal -->
+    <div class="modal fade" id="updateChatModal" tabindex="-1" aria-labelledby="updateChatModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateChatModal">Update Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form  id="udpate-chat-form">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="update-chat-id">
+                        <input type="text" name="message" id="message-input-box" class="rounded form-control" placeholder="Enter Message...">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
